@@ -10,8 +10,9 @@ import {
 const RadarChart = (
   ref: RefObject<HTMLElement>,
   data: Array<ISpiderData>,
+  legends: Array<string>,
   options: Partial<ISpiderConfig>
-) => {
+): d3.Selection<SVGSVGElement, unknown, null, undefined> => {
   const conf: ISpiderConfig = {
     radius: 5,
     w: 600,
@@ -23,10 +24,8 @@ const RadarChart = (
     radians: 2 * Math.PI,
     opacityArea: 0.5,
     ToRight: 10, // A feliratok eltolásának mértéke
-    TranslateX: 80, // ábra eltolás a szélétől
-    TranslateY: 30, // ábra eltolás a tetejétől
-    ExtraWidthX: 100,
-    ExtraWidthY: 100,
+    ExtraWidthX: 100, // Plusz távolság X tengelynél
+    ExtraWidthY: 100 + 50 * data.length, // Plusz távolság Y tengelynél
     color: d3.scaleOrdinal(d3.schemeCategory10),
     ...options,
   };
@@ -48,13 +47,20 @@ const RadarChart = (
   // Tisztítás
   d3.select(ref.current).select("svg").remove();
 
-  const g = d3
+  const svg = d3
     .select(ref.current)
     .append("svg")
     .attr("width", conf.w + conf.ExtraWidthX)
-    .attr("height", conf.h + conf.ExtraWidthY)
+    .attr("height", conf.h + conf.ExtraWidthY);
+
+  const g = svg
     .append("g")
-    .attr("transform", `translate(${conf.TranslateX}, ${conf.TranslateY})`);
+    .attr(
+      "transform",
+      `translate(${conf.ExtraWidthX / 2}, ${
+        (conf.ExtraWidthY - data.length * 50) / 2
+      })`
+    );
 
   // Sávok és Feliratok
   Array.from({ length: conf.levels }, (_, i) => {
@@ -278,6 +284,56 @@ const RadarChart = (
       .append("svg:title")
       .text(({ value }) => Math.max(value, 0));
   });
+
+  // Jelmagyarázat
+  const legendGroup = svg.append("g").attr("class", "legendGroup");
+
+  legendGroup
+    .append("text")
+    .attr("class", "title")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr(
+      "transform",
+      `translate(50, ${conf.h + (conf.ExtraWidthY || 0) / 2 + 10 + 12})`
+    )
+    .attr("font-size", "12px")
+    .attr("fill", "#404040")
+    .text("Football player's parameters");
+
+  const legend = legendGroup
+    .append("g")
+    .attr("class", "legend")
+    .attr(
+      "transform",
+      `translate(70, ${conf.h + (conf.ExtraWidthY || 0) / 2 + 20 + 12})`
+    );
+
+  // Színes jelölő nézet
+  legend
+    .selectAll("rect")
+    .data(legends)
+    .enter()
+    .append("rect")
+    .attr("x", 0)
+    .attr("y", (_, idx) => idx * 20)
+    .attr("width", 10)
+    .attr("height", 10)
+    .style("fill", (_, idx) => conf.color(idx));
+
+  // A címke neve
+  legend
+    .selectAll("text")
+    .data(legends)
+    .enter()
+    .append("text")
+    .attr("x", 20)
+    .attr("y", (_, idx) => idx * 20 + 9)
+    .attr("font-size", "11px")
+    .attr("fill", "#737373")
+    .text((txt) => txt);
+
+  return svg;
 };
 
 export default RadarChart;

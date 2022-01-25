@@ -9,8 +9,6 @@ export interface ISpiderConfig {
   radians: number;
   opacityArea: number;
   ToRight: number;
-  TranslateX: number;
-  TranslateY: number;
   ExtraWidthX: number;
   ExtraWidthY: number;
   color: any;
