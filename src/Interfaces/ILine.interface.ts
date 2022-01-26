@@ -6,6 +6,7 @@ export interface ILineConfig {
   opacity: number;
   paddingX: number;
   paddingY: number;
+  radius: number;
   color: any;
 }
 

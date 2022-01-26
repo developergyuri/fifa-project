@@ -111,12 +111,12 @@ const Player = ({ data }: IProps) => {
   useEffect(() => {
     setSelectedTeam(null);
     setSelectedPlayer(null);
-    setSelectedProp(null);
+    //setSelectedProp(null);
   }, [selectedYear]);
 
   useEffect(() => {
     setSelectedPlayer(null);
-    setSelectedProp(null);
+    //setSelectedProp(null);
   }, [selectedTeam]);
 
   useEffect(() => {
@@ -133,7 +133,7 @@ const Player = ({ data }: IProps) => {
         )
       );
     }
-    setSelectedProp(null);
+    //setSelectedProp(null);
   }, [selectedPlayer]);
 
   const properties = Object.keys(playerData || {});
@@ -258,10 +258,10 @@ const Player = ({ data }: IProps) => {
         {selectedPlayer && playerData && playerDataForEachYear && (
           <SimpleGrid
             minH="100%"
-            templateColumns={{ sm: "1fr", lg: "repeat(3, 1fr)" }}
-            templateRows={{ sm: "min-content 1fr", lg: "1fr" }}
+            templateColumns={{ base: "1fr", lg: "repeat(3, 1fr)" }}
+            templateRows={{ base: "min-content 1fr", lg: "1fr" }}
             templateAreas={{
-              sm: '"Player" "Stat"',
+              base: '"Player" "Stat"',
               lg: '"Player Stat Stat"',
             }}
             gap={4}

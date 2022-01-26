@@ -15,6 +15,7 @@ const LineChart = (
     opacity: 0.7,
     paddingX: 100,
     paddingY: 50,
+    radius: 5,
     color: d3.scaleOrdinal(d3.schemeCategory10),
     ...options,
   };
@@ -81,41 +82,42 @@ const LineChart = (
 
   // Koordináta csúcsok
   nlg
-    .selectAll(".nodes")
+    .selectAll("*")
     .data(mergedData)
     .enter()
     .append("circle")
-    .attr("r", 3)
+    .attr("r", conf.radius)
     .attr("cx", ({ year }) => x(year))
-    .attr("cy", ({ data }) => y(Number(data[selectedProp]) || 0))
+    .attr("cy", ({ data }) => y(Number(data[selectedProp] || 0)))
     .style("fill", "steelblue")
     .style("fill-opacity", conf.opacity + 0.2)
+    .style("cursor", "pointer")
     .on("mouseover", function (_, { data }) {
       tooltip
         .attr("x", parseFloat(d3.select(this).attr("cx")) - 10)
         .attr("y", parseFloat(d3.select(this).attr("cy")) - 5)
-        .text(Number(data[selectedProp]))
+        .text(Number(data[selectedProp] || 0))
         .transition()
         .duration(200)
         .style("opacity", 1);
     })
-    .on("mouseout", () => {
+    .on("mouseout", function () {
       tooltip.transition().duration(200).style("opacity", 0);
     });
 
+  // Vonal
   nlg
     .append("path")
     .datum(mergedData)
     .attr("fill", "none")
     .attr("stroke", "steelblue")
     .attr("stroke-width", 1.5)
-    .attr("opacity", conf.opacity)
     .attr(
       "d",
       d3
         .line<{ year: number; data: IPlayer }>()
-        .x((d) => x(d.year))
-        .y((d) => y(Number(d.data[selectedProp])) || 0)
+        .x(({ year }) => x(year))
+        .y(({ data }) => y(Number(data[selectedProp] || 0) || 0))
     );
 
   return svg;

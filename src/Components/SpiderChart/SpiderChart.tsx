@@ -33,7 +33,7 @@ const SpiderChart = ({ data, legends, title, size }: IProps) => {
     };
   }, [data, legends]);
 
-  return <Box ref={ref} bg="white" rounded="xl" overflow="hidden" />;
+  return <Box ref={ref} bg="white" rounded="xl" overflowX="hidden" />;
 };
 
 export default SpiderChart;
