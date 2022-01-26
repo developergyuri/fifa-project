@@ -4,13 +4,13 @@ import {
   IPolygonData,
   ISpiderConfig,
   ISpiderData,
-  ISpiderDataElement,
 } from "../Interfaces/ISpider.interface";
 
 const RadarChart = (
   ref: RefObject<HTMLElement>,
   data: Array<ISpiderData>,
   legends: Array<string>,
+  title: string,
   options: Partial<ISpiderConfig>
 ): d3.Selection<SVGSVGElement, unknown, null, undefined> => {
   const conf: ISpiderConfig = {
@@ -154,13 +154,8 @@ const RadarChart = (
 
   axis
     .append("text")
-    .attr("class", "legend")
-    .text((txt) => txt)
-    .style("font-family", "sans-serif")
-    .style("font-size", "11px")
-    .attr("text-anchor", "middle")
-    .attr("dy", "1.5em")
-    .attr("transform", () => "translate(0, -10)")
+    .attr("width", 50)
+    .attr("height", 100)
     .attr(
       "x",
       (_, i) =>
@@ -173,7 +168,22 @@ const RadarChart = (
       (_, i) =>
         (conf.h / 2) * (1 - Math.cos((i * conf.radians) / total)) -
         20 * Math.cos((i * conf.radians) / total)
-    );
+    )
+    .attr("class", "legend")
+    .each(function (text) {
+      text.split(" ").map((t, i) => {
+        d3.select(this)
+          .append("tspan")
+          .text(t)
+          .attr("dy", `${i * 0.5}rem`);
+        //.attr("text-anchor", "middle");
+      });
+    })
+    .style("font-family", "sans-serif")
+    .style("font-size", "11px")
+    .attr("text-anchor", "middle")
+    .attr("dy", "1.5em")
+    .attr("transform", () => "translate(0, -10)");
 
   data.forEach((sd, idx) => {
     const dataValues: IPolygonData = sd.map(({ value }, idx) => ({
@@ -219,7 +229,7 @@ const RadarChart = (
       });
   });
 
-  //Tooltip
+  // Tooltip feliratok
   const tooltip = g
     .append("text")
     .style("opacity", 0)
@@ -299,7 +309,7 @@ const RadarChart = (
     )
     .attr("font-size", "12px")
     .attr("fill", "#404040")
-    .text("Football player's parameters");
+    .text(title);
 
   const legend = legendGroup
     .append("g")

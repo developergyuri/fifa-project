@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import * as d3 from "d3";
 import SpiderChartUtil from "../../Utils/SpiderChart";
 import { ISpiderConfig, ISpiderData } from "../../Interfaces/ISpider.interface";
 import { Box } from "@chakra-ui/react";
@@ -7,16 +6,12 @@ import { Box } from "@chakra-ui/react";
 interface IProps {
   legends: string[];
   data: ISpiderData[];
+  title: string;
+  size: { width: number; height: number; paddingX?: number; paddingY?: number };
 }
 
-const SpiderChart = ({ data, legends }: IProps) => {
+const SpiderChart = ({ data, legends, title, size }: IProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
-
-  // Méretek
-  const size = {
-    width: 300,
-    height: 300,
-  };
 
   // Opciók a SpiderCharthoz
   const currentConf: Partial<ISpiderConfig> = {
@@ -24,12 +19,13 @@ const SpiderChart = ({ data, legends }: IProps) => {
     h: size.height,
     maxValue: 100,
     levels: 5,
-    ExtraWidthY: 100 + 50 * data.length,
+    ExtraWidthY: size.paddingY ? size.paddingY * 2 : 100 + 50 * data.length,
+    ExtraWidthX: size.paddingX ? size.paddingX * 2 : 100,
     radius: 3,
   };
 
   useEffect(() => {
-    const svg = SpiderChartUtil(ref, data, legends, currentConf);
+    const svg = SpiderChartUtil(ref, data, legends, title, currentConf);
 
     return () => {
       svg.selectAll("*").remove();

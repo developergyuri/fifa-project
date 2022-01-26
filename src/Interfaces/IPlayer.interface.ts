@@ -109,6 +109,7 @@ export interface IPlayer {
   club_flag_url: string;
   nation_logo_url: string;
   nation_flag_url: string;
+  [key: string]: string | number | Date;
 }
 
 type PositionType =

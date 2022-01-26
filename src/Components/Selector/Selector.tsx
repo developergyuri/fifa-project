@@ -2,7 +2,7 @@ import { Select } from "@chakra-ui/react";
 import { sort } from "fast-sort";
 
 interface Props {
-  data: number[] | string[];
+  data: Array<{ id: number | string; name: number | string }>;
   defaultValue: null | string | number;
   selectHandler: (a: any) => void;
   isDisabled?: boolean;
@@ -18,9 +18,9 @@ const Selector = ({ data, defaultValue, isDisabled, selectHandler }: Props) => {
       disabled={isDisabled}
     >
       {sort([...data])
-        .asc()
-        .map((d, idx) => (
-          <option value={d} key={idx} color="black">{`${d}`}</option>
+        .by([{ asc: (n) => n.name }])
+        .map(({ id, name }, idx) => (
+          <option value={id} key={idx} color="black">{`${name}`}</option>
         ))}
     </Select>
   );
