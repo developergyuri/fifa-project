@@ -1,16 +1,14 @@
 export interface ISpiderConfig {
   radius: number;
-  w: number;
-  h: number;
-  factor: number;
+  width: number;
+  height: number;
   factorLegend: number;
   levels: number;
   maxValue: number;
   radians: number;
-  opacityArea: number;
-  ToRight: number;
-  ExtraWidthX: number;
-  ExtraWidthY: number;
+  opacity: number;
+  PaddingX: number;
+  PaddingY: number;
   color: any;
 }
 

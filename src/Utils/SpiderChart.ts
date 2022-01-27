@@ -11,21 +11,19 @@ const RadarChart = (
   data: Array<ISpiderData>,
   legends: Array<string>,
   title: string,
-  options: Partial<ISpiderConfig>
+  options?: Partial<ISpiderConfig>
 ): d3.Selection<SVGSVGElement, unknown, null, undefined> => {
   const conf: ISpiderConfig = {
     radius: 5,
-    w: 600,
-    h: 600,
-    factor: 1,
+    width: 600,
+    height: 600,
     factorLegend: 0.85,
     levels: 3,
     maxValue: 0,
     radians: 2 * Math.PI,
-    opacityArea: 0.5,
-    ToRight: 10, // A feliratok eltolásának mértéke
-    ExtraWidthX: 100, // Plusz távolság X tengelynél
-    ExtraWidthY: 100 + 50 * data.length, // Plusz távolság Y tengelynél
+    opacity: 0.5,
+    PaddingX: 100,
+    PaddingY: 100 + 50 * data.length,
     color: d3.scaleOrdinal(d3.schemeCategory10),
     ...options,
   };
@@ -37,12 +35,12 @@ const RadarChart = (
   );
 
   // Tengely feliratok (tulajdonságok)
-  const allAxis = data[0].map(({ axis }) => axis);
+  const axisLabels = data[0].map(({ axis }) => axis);
 
   // Tengelyek száma
-  const total = allAxis.length;
+  const numOfAxis = axisLabels.length;
 
-  const radius = conf.factor * Math.min(conf.w / 2, conf.h / 2);
+  const radius = Math.min(conf.width / 2, conf.height / 2);
 
   // Tisztítás
   d3.select(ref.current).select("svg").remove();
@@ -50,56 +48,54 @@ const RadarChart = (
   const svg = d3
     .select(ref.current)
     .append("svg")
-    .attr("width", conf.w + conf.ExtraWidthX)
-    .attr("height", conf.h + conf.ExtraWidthY);
+    .attr("width", conf.width + conf.PaddingX)
+    .attr("height", conf.height + conf.PaddingY);
 
   const g = svg
     .append("g")
     .attr(
       "transform",
-      `translate(${conf.ExtraWidthX / 2}, ${
-        (conf.ExtraWidthY - data.length * 50) / 2
+      `translate(${conf.PaddingX / 2}, ${
+        (conf.PaddingY - data.length * 50) / 2
       })`
     );
 
   // Sávok és Feliratok
   Array.from({ length: conf.levels }, (_, i) => {
-    const levelFactor = conf.factor * radius * ((i + 1) / conf.levels);
+    const levelFactor = radius * ((i + 1) / conf.levels);
 
     // Sávok
     g.selectAll(".levels")
-      .data(allAxis)
+      .data(axisLabels)
       .enter()
-      .append("svg:line")
+      .append("line")
       .attr(
         "x1",
-        (_, i) =>
-          levelFactor * (1 - conf.factor * Math.sin((i * conf.radians) / total))
+        (_, i) => levelFactor * (1 - Math.sin((i * conf.radians) / numOfAxis))
       )
       .attr(
         "y1",
-        (_, i) =>
-          levelFactor * (1 - conf.factor * Math.cos((i * conf.radians) / total))
+        (_, i) => levelFactor * (1 - Math.cos((i * conf.radians) / numOfAxis))
       )
       .attr(
         "x2",
         (_, i) =>
-          levelFactor *
-          (1 - conf.factor * Math.sin(((i + 1) * conf.radians) / total))
+          levelFactor * (1 - Math.sin(((i + 1) * conf.radians) / numOfAxis))
       )
       .attr(
         "y2",
         (_, i) =>
-          levelFactor *
-          (1 - conf.factor * Math.cos(((i + 1) * conf.radians) / total))
+          levelFactor * (1 - Math.cos(((i + 1) * conf.radians) / numOfAxis))
       )
       .attr("class", "line")
-      .style("stroke", "grey")
-      .style("stroke-opacity", "0.75")
+      .style("stroke", "white")
+      .style("stroke-opacity", conf.opacity + 0.2)
       .style("stroke-width", "0.2px")
       .attr(
         "transform",
-        `translate(${conf.w / 2 - levelFactor}, ${conf.h / 2 - levelFactor})`
+        `translate(${conf.width / 2 - levelFactor}, ${
+          conf.height / 2 - levelFactor
+        })`
       );
 
     // Feliratok
@@ -110,46 +106,46 @@ const RadarChart = (
         )
       )
       .enter()
-      .append("svg:text")
-      .attr("x", () => levelFactor * (1 - conf.factor * Math.sin(0)))
-      .attr("y", () => levelFactor * (1 - conf.factor * Math.cos(0)))
+      .append("text")
+      .attr("x", () => levelFactor * (1 - Math.sin(0)))
+      .attr("y", () => levelFactor * (1 - Math.cos(0)))
       .attr("class", "legend")
       .style("font-family", "sans-serif")
       .style("font-size", "10px")
       .attr(
         "transform",
-        `translate(${conf.w / 2 - levelFactor + conf.ToRight}, ${
-          conf.h / 2 - levelFactor
+        `translate(${conf.width / 2 - levelFactor + 10}, ${
+          conf.height / 2 - levelFactor
         })`
       )
-      .attr("fill", "#737373")
+      .attr("fill", "#A1A1A1")
       .text(Math.round(((i + 1) * conf.maxValue) / conf.levels));
   });
 
   // Tengelyek
   const axis = g
     .selectAll(".axis")
-    .data(allAxis)
+    .data(axisLabels)
     .enter()
     .append("g")
     .attr("class", "axis");
 
   axis
     .append("line")
-    .attr("x1", conf.w / 2)
-    .attr("y1", conf.h / 2)
+    .attr("x1", conf.width / 2)
+    .attr("y1", conf.height / 2)
     .attr(
       "x2",
       (_, i) =>
-        (conf.w / 2) * (1 - conf.factor * Math.sin((i * conf.radians) / total))
+        (conf.width / 2) * (1 - Math.sin((i * conf.radians) / numOfAxis))
     )
     .attr(
       "y2",
       (_, i) =>
-        (conf.h / 2) * (1 - conf.factor * Math.cos((i * conf.radians) / total))
+        (conf.height / 2) * (1 - Math.cos((i * conf.radians) / numOfAxis))
     )
     .attr("class", "line")
-    .style("stroke", "grey")
+    .style("stroke", "white")
     .style("stroke-width", "1px");
 
   axis
@@ -159,15 +155,15 @@ const RadarChart = (
     .attr(
       "x",
       (_, i) =>
-        (conf.w / 2) *
-          (1 - conf.factorLegend * Math.sin((i * conf.radians) / total)) -
-        60 * Math.sin((i * conf.radians) / total)
+        (conf.width / 2) *
+          (1 - conf.factorLegend * Math.sin((i * conf.radians) / numOfAxis)) -
+        60 * Math.sin((i * conf.radians) / numOfAxis)
     )
     .attr(
       "y",
       (_, i) =>
-        (conf.h / 2) * (1 - Math.cos((i * conf.radians) / total)) -
-        20 * Math.cos((i * conf.radians) / total)
+        (conf.height / 2) * (1 - Math.cos((i * conf.radians) / numOfAxis)) -
+        20 * Math.cos((i * conf.radians) / numOfAxis)
     )
     .attr("class", "legend")
     .each(function (text) {
@@ -175,12 +171,13 @@ const RadarChart = (
         d3.select(this)
           .append("tspan")
           .text(t)
-          .attr("dy", `${i * 0.5}rem`);
-        //.attr("text-anchor", "middle");
+          .attr("dy", `${i * 0.5}rem`)
+          .attr("text-anchor", "middle");
       });
     })
     .style("font-family", "sans-serif")
     .style("font-size", "11px")
+    .attr("fill", "white")
     .attr("text-anchor", "middle")
     .attr("dy", "1.5em")
     .attr("transform", () => "translate(0, -10)");
@@ -188,44 +185,45 @@ const RadarChart = (
   data.forEach((sd, idx) => {
     const dataValues: IPolygonData = sd.map(({ value }, idx) => ({
       x:
-        (conf.w / 2) *
+        (conf.width / 2) *
         (1 -
           (Math.max(value, 0) / conf.maxValue) *
-            conf.factor *
-            Math.sin((idx * conf.radians) / total)),
+            Math.sin((idx * conf.radians) / numOfAxis)),
       y:
-        (conf.h / 2) *
+        (conf.height / 2) *
         (1 -
           (Math.max(value, 0) / conf.maxValue) *
-            conf.factor *
-            Math.cos((idx * conf.radians) / total)),
+            Math.cos((idx * conf.radians) / numOfAxis)),
     }));
 
     g.selectAll(".area")
       .data([dataValues])
       .enter()
       .append("polygon")
-      .attr("class", `radar-chart-serie-${idx}`)
+      .attr("class", `polygon-${idx}`)
       .style("stroke-width", "1px")
       .style("stroke", conf.color(idx))
       .attr("points", (pd: IPolygonData) =>
         pd.map(({ x, y }) => `${x}, ${y}`).join(" ")
       )
       .style("fill", () => conf.color(idx))
-      .style("fill-opacity", conf.opacityArea)
+      .style("fill-opacity", conf.opacity)
       .on("mouseover", function () {
-        let z = "polygon." + d3.select(this).attr("class");
         g.selectAll("polygon")
           .transition()
           .duration(200)
           .style("fill-opacity", 0.1);
-        g.selectAll(z).transition().duration(200).style("fill-opacity", 0.7);
+
+        g.selectAll(`polygon.${d3.select(this).attr("class")}`)
+          .transition()
+          .duration(200)
+          .style("fill-opacity", conf.opacity);
       })
       .on("mouseout", function () {
         g.selectAll("polygon")
           .transition()
           .duration(200)
-          .style("fill-opacity", conf.opacityArea);
+          .style("fill-opacity", conf.opacity);
       });
   });
 
@@ -234,64 +232,65 @@ const RadarChart = (
     .append("text")
     .style("opacity", 0)
     .style("font-family", "sans-serif")
-    .style("font-size", "13px");
+    .style("font-size", "13px")
+    .style("cursor", "pointer")
+    .attr("fill", "white");
 
+  // Koordináta csúcsok
   data.forEach((sd, idx) => {
     g.selectAll(".nodes")
       .data(sd)
       .enter()
-      .append("svg:circle")
-      .attr("class", `radar-chart-serie-${idx}`)
+      .append("circle")
+      .attr("class", `circle-${idx}`)
       .attr("r", conf.radius)
       .attr("alt", ({ value }) => Math.max(value, 0))
       .attr(
         "cx",
         ({ value }, idx) =>
-          (conf.w / 2) *
+          (conf.width / 2) *
           (1 -
             (Math.max(value, 0) / conf.maxValue) *
-              conf.factor *
-              Math.sin((idx * conf.radians) / total))
+              Math.sin((idx * conf.radians) / numOfAxis))
       )
       .attr("cy", ({ value }, idx) => {
         return (
-          (conf.h / 2) *
+          (conf.height / 2) *
           (1 -
             (Math.max(value, 0) / conf.maxValue) *
-              conf.factor *
-              Math.cos((idx * conf.radians) / total))
+              Math.cos((idx * conf.radians) / numOfAxis))
         );
       })
-      .attr("data-ref", ({ axis }) => axis)
+      //.attr("data-ref", ({ axis }) => axis)
       .style("fill", conf.color(idx))
       .style("fill-opacity", 0.9)
       .on("mouseover", function (_, { value }) {
-        let newX = parseFloat(d3.select(this).attr("cx")) - 10;
-        let newY = parseFloat(d3.select(this).attr("cy")) - 5;
-
         tooltip
-          .attr("x", newX)
-          .attr("y", newY)
+          .attr("x", parseFloat(d3.select(this).attr("cx")) - 10)
+          .attr("y", parseFloat(d3.select(this).attr("cy")) - 5)
           .text(value)
           .transition()
           .duration(200)
           .style("opacity", 1);
 
-        let z = "polygon." + d3.select(this).attr("class");
         g.selectAll("polygon")
           .transition()
           .duration(200)
           .style("fill-opacity", 0.1);
-        g.selectAll(z).transition().duration(200).style("fill-opacity", 0.7);
+
+        g.selectAll(`polygon.${d3.select(this).attr("class")}`)
+          .transition()
+          .duration(200)
+          .style("fill-opacity", 0.7);
       })
-      .on("mouseout", function () {
+      .on("mouseout", () => {
         tooltip.transition().duration(200).style("opacity", 0);
         g.selectAll("polygon")
           .transition()
           .duration(200)
-          .style("fill-opacity", conf.opacityArea);
+          .style("fill-opacity", conf.opacity);
       })
-      .append("svg:title")
+      .append("title")
       .text(({ value }) => Math.max(value, 0));
   });
 
@@ -305,10 +304,10 @@ const RadarChart = (
     .attr("y", 0)
     .attr(
       "transform",
-      `translate(50, ${conf.h + (conf.ExtraWidthY || 0) / 2 + 10 + 12})`
+      `translate(50, ${conf.height + (conf.PaddingY || 0) / 2 + 10 + 12})`
     )
     .attr("font-size", "12px")
-    .attr("fill", "#404040")
+    .attr("fill", "white")
     .text(title);
 
   const legend = legendGroup
@@ -316,7 +315,7 @@ const RadarChart = (
     .attr("class", "legend")
     .attr(
       "transform",
-      `translate(70, ${conf.h + (conf.ExtraWidthY || 0) / 2 + 20 + 12})`
+      `translate(70, ${conf.height + (conf.PaddingY || 0) / 2 + 20 + 12})`
     );
 
   // Színes jelölő nézet
@@ -340,7 +339,7 @@ const RadarChart = (
     .attr("x", 20)
     .attr("y", (_, idx) => idx * 20 + 9)
     .attr("font-size", "11px")
-    .attr("fill", "#737373")
+    .attr("fill", "white")
     .text((txt) => txt);
 
   return svg;

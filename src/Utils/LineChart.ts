@@ -77,8 +77,8 @@ const LineChart = (
     .style("opacity", 0)
     .style("font-family", "sans-serif")
     .style("font-size", "11px")
-    .style("stroke", "white")
-    .attr("stroke-width", 0.5);
+    .attr("fill", "#F5F5F5")
+    .attr("stroke-width", "0.5px");
 
   // Koordináta csúcsok
   nlg

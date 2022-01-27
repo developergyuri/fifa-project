@@ -15,12 +15,12 @@ const SpiderChart = ({ data, legends, title, size }: IProps) => {
 
   // Opciók a SpiderCharthoz
   const currentConf: Partial<ISpiderConfig> = {
-    w: size.width,
-    h: size.height,
+    width: size.width,
+    height: size.height,
     maxValue: 100,
     levels: 5,
-    ExtraWidthY: size.paddingY ? size.paddingY * 2 : 100 + 50 * data.length,
-    ExtraWidthX: size.paddingX ? size.paddingX * 2 : 100,
+    PaddingY: size.paddingY ? size.paddingY * 2 : 100 + 50 * data.length,
+    PaddingX: size.paddingX ? size.paddingX * 2 : 100,
     radius: 3,
   };
 
@@ -33,7 +33,7 @@ const SpiderChart = ({ data, legends, title, size }: IProps) => {
     };
   }, [data, legends]);
 
-  return <Box ref={ref} bg="white" rounded="xl" overflowX="hidden" />;
+  return <Box ref={ref} bg="blackAlpha.400" rounded="xl" overflowX="hidden" />;
 };
 
 export default SpiderChart;
