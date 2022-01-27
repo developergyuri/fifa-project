@@ -24,6 +24,7 @@ import preprocess from "./Utils/Preprocess";
 import { IData } from "./Interfaces/IData.interface";
 import PlayerScreen from "./Screens/Player/Player";
 import PlayerComparisonScreen from "./Screens/PlayerComparison/PlayerComparison";
+import DatasetScreen from "./Screens/Dataset/Dataset";
 
 const App = () => {
   const [data, setData] = useState<IData[]>([]);
@@ -58,7 +59,7 @@ const App = () => {
               <Tab>Játékos</Tab>
               <Tab>Játékos összehasonlítás</Tab>
               <Tab>Csapat</Tab>
-              <Tab>Adathalmaz</Tab>
+              <Tab>Térkép</Tab>
             </TabList>
 
             <TabPanels>
@@ -72,7 +73,7 @@ const App = () => {
                 <p>Csapat</p>
               </TabPanel>
               <TabPanel>
-                <p>Adathalmaz</p>
+                <DatasetScreen data={data} />
               </TabPanel>
             </TabPanels>
           </Tabs>

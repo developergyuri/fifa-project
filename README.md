@@ -44,3 +44,9 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+Linkek:
+https://www.d3-graph-gallery.com/graph/line_basic.html
+https://www.d3-graph-gallery.com/graph/choropleth_basic.html
+https://www.d3-graph-gallery.com/spider.html
+https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson
