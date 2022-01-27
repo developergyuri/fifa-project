@@ -1,17 +1,12 @@
 import {
   Container,
   Text,
-  Box,
   Modal,
   ModalOverlay,
   ModalContent,
   Spinner,
-  Stack,
   Grid,
   GridItem,
-  Circle,
-  Divider,
-  SimpleGrid,
   Tabs,
   TabList,
   Tab,
@@ -19,12 +14,12 @@ import {
   TabPanel,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import "./App.css";
 import preprocess from "./Utils/Preprocess";
 import { IData } from "./Interfaces/IData.interface";
 import PlayerScreen from "./Screens/Player/Player";
 import PlayerComparisonScreen from "./Screens/PlayerComparison/PlayerComparison";
 import DatasetScreen from "./Screens/Dataset/Dataset";
+import TeamScreen from "./Screens/Team/Team";
 
 const App = () => {
   const [data, setData] = useState<IData[]>([]);
@@ -34,10 +29,6 @@ const App = () => {
       .then((res) => setData(res))
       .catch((error) => console.log(error));
   }, []);
-
-  /* useEffect(() => {
-    console.log(data);
-  }, [data]); */
 
   return (
     <>
@@ -69,10 +60,10 @@ const App = () => {
               <TabPanel paddingY={4} paddingX={0}>
                 <PlayerComparisonScreen data={data} />
               </TabPanel>
-              <TabPanel>
-                <p>Csapat</p>
+              <TabPanel paddingY={4} paddingX={0}>
+                <TeamScreen data={data} />
               </TabPanel>
-              <TabPanel>
+              <TabPanel paddingY={4} paddingX={0}>
                 <DatasetScreen data={data} />
               </TabPanel>
             </TabPanels>

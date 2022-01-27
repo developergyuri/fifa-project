@@ -20,6 +20,7 @@ import { IPlayer } from "../../Interfaces/IPlayer.interface";
 import { IData } from "../../Interfaces/IData.interface";
 import Selector from "../../Components/Selector/Selector";
 import { CheckIcon } from "@chakra-ui/icons";
+import { capitalize } from "../../Utils/StringHelper";
 
 interface IProps {
   data: IData[];
@@ -105,7 +106,6 @@ const Player = ({ data }: IProps) => {
 
   const selectPropHandler = (s: string) => {
     setSelectedProp(s);
-    console.log(s);
   };
 
   useEffect(() => {
@@ -155,9 +155,6 @@ const Player = ({ data }: IProps) => {
     "defending",
     "goalkeeping",
   ];
-
-  const capitalize = (str: string) =>
-    str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
   return (
     <Grid

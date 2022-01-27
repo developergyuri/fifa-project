@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
 import { IData } from "../../Interfaces/IData.interface";
 import Selector from "../../Components/Selector/Selector";
-import { Stack } from "@chakra-ui/react";
+import { Stack, Box } from "@chakra-ui/react";
 import { lookup } from "country-data";
 
 interface IProps {
@@ -187,15 +187,17 @@ const Dataset = ({ data }: IProps) => {
 
   return (
     <Stack padding={0} spacing={4}>
-      <Selector
-        data={data.map(({ year }) => ({
-          id: year,
-          name: year,
-        }))}
-        defaultValue={selectedYear}
-        isDisabled={!data.length}
-        selectHandler={selectYearHandler}
-      />
+      <Box padding={4} bg="blackAlpha.400" rounded="xl">
+        <Selector
+          data={data.map(({ year }) => ({
+            id: year,
+            name: year,
+          }))}
+          defaultValue={selectedYear}
+          isDisabled={!data.length}
+          selectHandler={selectYearHandler}
+        />
+      </Box>
       {selectedYear && <div ref={ref} />}
     </Stack>
   );

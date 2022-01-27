@@ -13,7 +13,6 @@ import {
   ListIcon,
 } from "@chakra-ui/react";
 import SpiderChart from "../../Components/SpiderChart/SpiderChart";
-import BarPlot from "../../Components/BarPlot/BarPlot";
 import { IPlayer } from "../../Interfaces/IPlayer.interface";
 import { IData } from "../../Interfaces/IData.interface";
 import Selector from "../../Components/Selector/Selector";
