@@ -4,7 +4,7 @@ import { CheckIcon } from "@chakra-ui/icons";
 import Selector from "../../Components/Selector/Selector";
 import BarChart from "../../Components/BarChart/BarChart";
 import { IData } from "../../Interfaces/IData.interface";
-import { capitalize } from "../../Utils/StringHelper";
+import { capitalize } from "../../Utils/HelpersFn";
 import { IPlayer } from "../../Interfaces/IPlayer.interface";
 import { sort } from "fast-sort";
 

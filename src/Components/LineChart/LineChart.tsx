@@ -1,6 +1,7 @@
 import { useRef, useEffect } from "react";
 import { IPlayer } from "../../Interfaces/IPlayer.interface";
 import { Box } from "@chakra-ui/react";
+import * as d3 from "d3";
 
 import LineChartUtil from "../../Utils/LineChart";
 
@@ -13,11 +14,11 @@ const LineChart = ({ data, selectedProp }: IProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const svg = LineChartUtil(ref, data, selectedProp);
+    LineChartUtil(ref, data, selectedProp);
 
     return () => {
-      svg.selectAll("*").remove();
-      svg.exit().remove();
+      d3.select(ref.current).selectAll("*").remove();
+      d3.select(ref.current).exit().remove();
     };
   }, [data, selectedProp]);
 

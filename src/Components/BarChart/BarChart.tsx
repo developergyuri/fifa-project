@@ -88,8 +88,6 @@ const BarChart = ({ data, selectedProp }: IProps) => {
     console.log(bars.attr("sizes.width"));
 
     return () => {
-      /* svg.selectAll("*").remove();
-      svg.exit().remove(); */
       d3.select(ref.current).selectAll("*").remove();
       d3.select(ref.current).exit().remove();
     };

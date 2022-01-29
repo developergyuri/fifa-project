@@ -20,7 +20,7 @@ import { IPlayer } from "../../Interfaces/IPlayer.interface";
 import { IData } from "../../Interfaces/IData.interface";
 import Selector from "../../Components/Selector/Selector";
 import { CheckIcon } from "@chakra-ui/icons";
-import { capitalize } from "../../Utils/StringHelper";
+import { capitalize } from "../../Utils/HelpersFn";
 
 interface IProps {
   data: IData[];
@@ -328,7 +328,7 @@ const Player = ({ data }: IProps) => {
             </Stack>
             <Tabs rounded="xl" bg="blackAlpha.400" gridArea="Stat" padding={4}>
               <TabList>
-                <Tab>Képsségek</Tab>
+                <Tab>Képességek</Tab>
                 <Tab>Éves adatok</Tab>
               </TabList>
 

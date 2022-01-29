@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import SpiderChartUtil from "../../Utils/SpiderChart";
 import { ISpiderConfig, ISpiderData } from "../../Interfaces/ISpider.interface";
 import { Box } from "@chakra-ui/react";
+import * as d3 from "d3";
 
 interface IProps {
   legends: string[];
@@ -25,11 +26,11 @@ const SpiderChart = ({ data, legends, title, size }: IProps) => {
   };
 
   useEffect(() => {
-    const svg = SpiderChartUtil(ref, data, legends, title, currentConf);
+    SpiderChartUtil(ref, data, legends, title, currentConf);
 
     return () => {
-      svg.selectAll("*").remove();
-      svg.exit().remove();
+      d3.select(ref.current).selectAll("*").remove();
+      d3.select(ref.current).exit().remove();
     };
   }, [data, legends]);
 
