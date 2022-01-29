@@ -6,6 +6,7 @@ import BarChart from "../../Components/BarChart/BarChart";
 import { IData } from "../../Interfaces/IData.interface";
 import { capitalize } from "../../Utils/StringHelper";
 import { IPlayer } from "../../Interfaces/IPlayer.interface";
+import { sort } from "fast-sort";
 
 const SelectablePropKeys = [
   "value_eur",
@@ -169,7 +170,10 @@ const Team = ({ data }: IProps) => {
           selectHandler={selectPropHandler}
         />
         {selectedTeam && playersData && selectedProp && (
-          <BarChart data={playersData} selectedProp={selectedProp} />
+          <BarChart
+            data={sort(playersData).asc([(p) => p[selectedProp] || 0])}
+            selectedProp={selectedProp}
+          />
         )}
       </Stack>
     </Stack>
