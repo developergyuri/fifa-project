@@ -116,7 +116,7 @@ const Team = ({ data }: IProps) => {
           >
             {!selectedYear ? "1." : <CheckIcon />}
           </Circle>
-          <Divider maxW="75px" />
+          <Divider maxW="75px" visibility={{ base: "hidden", lg: "visible" }} />
           <Selector
             data={data.map(({ year }) => ({
               id: year,
@@ -138,7 +138,7 @@ const Team = ({ data }: IProps) => {
           >
             {!selectedTeam ? "2." : <CheckIcon />}
           </Circle>
-          <Divider maxW="75px" />
+          <Divider maxW="75px" visibility={{ base: "hidden", lg: "visible" }} />
           <Selector
             data={
               Array.from(

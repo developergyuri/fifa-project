@@ -103,7 +103,7 @@ const MapMaker = (
           tooltip
             .style("visibility", "visible")
             .text(
-              (ocuraccy.find((oc) => oc.alpha3 === d.id)?.value || 0).toFixed(2)
+              ocuraccy.find((oc) => oc.alpha3 === d.id)?.value.toFixed(2) || "Nincs adat."
             );
         })
         .on("mouseleave", function () {

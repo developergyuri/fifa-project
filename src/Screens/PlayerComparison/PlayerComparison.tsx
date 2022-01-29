@@ -109,7 +109,7 @@ const PlayerComparison = ({ data }: IProps) => {
             >
               {!selectedYear ? "1." : <CheckIcon />}
             </Circle>
-            <Divider maxW="75px" />
+            <Divider maxW="75px" display={{base: "none", sm: "block"}}/>
             <Selector
               data={data.map(({ year }) => ({
                 id: year,
@@ -131,7 +131,7 @@ const PlayerComparison = ({ data }: IProps) => {
             >
               {!selectedTeam ? "2." : <CheckIcon />}
             </Circle>
-            <Divider maxW="75px" />
+            <Divider maxW="75px" display={{base: "none", sm: "block"}} />
             <Selector
               data={
                 Array.from(
@@ -162,7 +162,7 @@ const PlayerComparison = ({ data }: IProps) => {
             >
               {!selectedPlayer ? "3." : <CheckIcon />}
             </Circle>
-            <Divider maxW="75px" />
+            <Divider maxW="75px" display={{base: "none", sm: "block"}}/>
             <Selector
               data={
                 data
@@ -191,10 +191,10 @@ const PlayerComparison = ({ data }: IProps) => {
         {!!playerList?.length && (
           <SimpleGrid
             minH="100%"
-            templateColumns={{ sm: "1fr", lg: "repeat(3, 1fr)" }}
-            templateRows={{ sm: "min-content 1fr", lg: "1fr" }}
+            templateColumns={{ base: "1fr", lg: "repeat(3, 1fr)" }}
+            templateRows={{ base: "min-content 1fr", lg: "1fr" }}
             templateAreas={{
-              sm: '"Player" "Stat"',
+              base: '"Player" "Stat"',
               lg: '"Player Stat Stat"',
             }}
             gap={4}

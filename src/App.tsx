@@ -50,10 +50,10 @@ const App = () => {
               <Tab>Játékos</Tab>
               <Tab>Játékos összehasonlítás</Tab>
               <Tab>Csapat</Tab>
-              <Tab>Térkép</Tab>
+              <Tab>Adathalmaz</Tab>
             </TabList>
 
-            <TabPanels>
+            <TabPanels overflowX="auto">
               <TabPanel paddingY={4} paddingX={0}>
                 <PlayerScreen data={data} />
               </TabPanel>

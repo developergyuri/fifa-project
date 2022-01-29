@@ -176,7 +176,7 @@ const Player = ({ data }: IProps) => {
             >
               {!selectedYear ? "1." : <CheckIcon />}
             </Circle>
-            <Divider maxW="75px" />
+            <Divider maxW="75px" display={{base: "none", sm: "block"}} />
             <Selector
               data={data.map(({ year }) => ({
                 id: year,
@@ -198,7 +198,7 @@ const Player = ({ data }: IProps) => {
             >
               {!selectedTeam ? "2." : <CheckIcon />}
             </Circle>
-            <Divider maxW="75px" />
+            <Divider maxW="75px" display={{base: "none", sm: "block"}} />
             <Selector
               data={
                 Array.from(
@@ -229,7 +229,7 @@ const Player = ({ data }: IProps) => {
             >
               {!selectedPlayer ? "3." : <CheckIcon />}
             </Circle>
-            <Divider maxW="75px" />
+            <Divider maxW="75px" display={{base: "none", sm: "block"}}/>
             <Selector
               data={
                 data
