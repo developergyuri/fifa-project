@@ -17,6 +17,7 @@ import { IPlayer } from "../../Interfaces/IPlayer.interface";
 import { IData } from "../../Interfaces/IData.interface";
 import Selector from "../../Components/Selector/Selector";
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
+import GroupedBarChart from "../../Components/GroupedBarChart/GroupedBarChart";
 
 interface IProps {
   data: IData[];
@@ -109,7 +110,7 @@ const PlayerComparison = ({ data }: IProps) => {
             >
               {!selectedYear ? "1." : <CheckIcon />}
             </Circle>
-            <Divider maxW="75px" display={{base: "none", sm: "block"}}/>
+            <Divider maxW="75px" display={{ base: "none", sm: "block" }} />
             <Selector
               data={data.map(({ year }) => ({
                 id: year,
@@ -131,7 +132,7 @@ const PlayerComparison = ({ data }: IProps) => {
             >
               {!selectedTeam ? "2." : <CheckIcon />}
             </Circle>
-            <Divider maxW="75px" display={{base: "none", sm: "block"}} />
+            <Divider maxW="75px" display={{ base: "none", sm: "block" }} />
             <Selector
               data={
                 Array.from(
@@ -162,7 +163,7 @@ const PlayerComparison = ({ data }: IProps) => {
             >
               {!selectedPlayer ? "3." : <CheckIcon />}
             </Circle>
-            <Divider maxW="75px" display={{base: "none", sm: "block"}}/>
+            <Divider maxW="75px" display={{ base: "none", sm: "block" }} />
             <Selector
               data={
                 data
@@ -242,6 +243,7 @@ const PlayerComparison = ({ data }: IProps) => {
                 title="Main parameters"
                 size={{ height: 300, width: 300 }}
               />
+              <GroupedBarChart data={playerList} />
             </Stack>
             <SimpleGrid
               minChildWidth="350px"

@@ -11,6 +11,7 @@ import {
   TabPanel,
   Tab,
   TabPanels,
+  Text,
 } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
 import Map from "../../Components/Map/Map";
@@ -130,9 +131,14 @@ const Dataset = ({ data }: IProps) => {
               selectHandler={selectYearHandler}
             />
             {selectedYear && (
-              <PieChart
-                data={data.find((d) => d.year === selectedYear)?.data || []}
-              />
+              <>
+                <Text fontSize="2xl" textAlign="center">
+                  Focisták lábának megoszlása
+                </Text>
+                <PieChart
+                  data={data.find((d) => d.year === selectedYear)?.data || []}
+                />
+              </>
             )}
           </Stack>
         </TabPanel>

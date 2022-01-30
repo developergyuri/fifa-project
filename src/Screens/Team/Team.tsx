@@ -116,7 +116,7 @@ const Team = ({ data }: IProps) => {
           >
             {!selectedYear ? "1." : <CheckIcon />}
           </Circle>
-          <Divider maxW="75px" visibility={{ base: "hidden", lg: "visible" }} />
+          <Divider maxW="75px" display={{base: "none", sm: "block"}} />
           <Selector
             data={data.map(({ year }) => ({
               id: year,
@@ -138,7 +138,7 @@ const Team = ({ data }: IProps) => {
           >
             {!selectedTeam ? "2." : <CheckIcon />}
           </Circle>
-          <Divider maxW="75px" visibility={{ base: "hidden", lg: "visible" }} />
+          <Divider maxW="75px" display={{base: "none", sm: "block"}} />
           <Selector
             data={
               Array.from(
@@ -171,7 +171,7 @@ const Team = ({ data }: IProps) => {
         />
         {selectedTeam && playersData && selectedProp && (
           <BarChart
-            data={sort(playersData).asc([(p) => p[selectedProp] || 0])}
+            data={sort(playersData).desc([(p) => p[selectedProp] || 0])}
             selectedProp={selectedProp}
           />
         )}
