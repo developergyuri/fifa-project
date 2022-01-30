@@ -80,7 +80,8 @@ const PieChart = (
         .style("visibility", "visible")
         .text(
           `${(
-            data.value / fd.map((d) => d.value).reduce((a, b) => a + b, 0)
+            (data.value / fd.map((d) => d.value).reduce((a, b) => a + b, 0)) *
+            100
           ).toFixed(2)}%`
         );
     })
